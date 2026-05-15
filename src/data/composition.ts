@@ -37,6 +37,9 @@ export const compositionData: CompositionItem[] = [
   // Chapter 5
   { japanese: '昨日、私はピザを食べました。', italian: 'Ieri ho mangiato la pizza.', chapter: 5 },
   { japanese: 'マルコは昨日、映画に行きました。', italian: 'Marco è andato al cinema ieri.', chapter: 5 },
+  { japanese: '彼女は先週、ローマに行きました。', italian: 'Lei è andata a Roma la settimana scorsa.', chapter: 5 },
+  { japanese: '私たちは家でテレビを見ました。', italian: 'Abbiamo guardato la televisione a casa.', chapter: 5 },
+  { japanese: '君はもうお昼ご飯を食べた？', italian: 'Hai già pranzato?', chapter: 5 },
   { japanese: '子供の頃、私の母はピアノを弾いていました。', italian: 'Da bambina mia madre suonava il pianoforte.', chapter: 5 },
 
   // Chapter 10
