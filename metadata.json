@@ -1,6 +1,6 @@
 {
-  "name": "Impara Pro - イタリア語学習",
-  "description": "語彙、フレーズ、瞬間作文でイタリア語をマスターするための日本人向け学習アプリ。アルファベット・音声入力・並び替えに対応。",
+  "name": "Subito! - La Pratica Rende Perfetti",
+  "description": "文法事項を文化や実際の使用例と結びつけながら、イタリア語を段階的に学べる学習アプリ。名詞の一致から近過去まで、日本人学習者向けに設計されたカリキュラムを提供します。",
   "requestFramePermissions": ["microphone"],
   "majorCapabilities": []
 }

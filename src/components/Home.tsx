@@ -16,12 +16,12 @@ export default function Home({ onNavigate }: HomeProps) {
             <span className="text-white font-black text-sm tracking-tighter">IT</span>
           </div>
           <div>
-            <h1 className="text-xl font-black tracking-tight uppercase text-brand-text">Impara Pro</h1>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent/60">Linguaggio Italiano</p>
+            <h1 className="text-xl font-black tracking-tight uppercase text-brand-text">Subito!</h1>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent/60">La Pratica Rende Perfetti</p>
           </div>
         </div>
         <div className="w-10 h-10 rounded-full bg-brand-text flex items-center justify-center text-white ring-4 ring-white shadow-sm font-bold text-xs">
-          JP
+          IT
         </div>
       </header>
 
