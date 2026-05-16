@@ -17,12 +17,13 @@ export default function CompositionPractice({ onBack }: CompositionPracticeProps
   const [feedback, setFeedback] = useState<{ isCorrect: boolean; show: boolean }>({ isCorrect: false, show: false });
   const [shuffledWords, setShuffledWords] = useState<string[]>([]);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
+  const [showHint, setShowHint] = useState(false);
 
   const chapters = useMemo(() => Array.from(new Set(compositionData.map(c => c.chapter))), []);
 
   const filteredItems = useMemo(() => {
     if (selectedChapter === null) return [];
-    return compositionData.filter(c => c.chapter === selectedChapter);
+    return [...compositionData].filter(c => c.chapter === selectedChapter).sort(() => Math.random() - 0.5);
   }, [selectedChapter]);
 
   const currentItem = filteredItems[currentIndex];
@@ -32,6 +33,7 @@ export default function CompositionPractice({ onBack }: CompositionPracticeProps
       const words = currentItem.italian.replace(/[.!?]/g, '').split(' ');
       setShuffledWords([...words].sort(() => Math.random() - 0.5));
       setSelectedWords([]);
+      setShowHint(false);
     }
   }, [currentItem, mode]);
 
@@ -41,6 +43,7 @@ export default function CompositionPractice({ onBack }: CompositionPracticeProps
       setInputValue('');
       setFeedback({ isCorrect: false, show: false });
       setSelectedWords([]);
+      setShowHint(false);
     } else {
       setSelectedChapter(null);
       setMode(null);
@@ -97,6 +100,13 @@ export default function CompositionPractice({ onBack }: CompositionPracticeProps
       speak(currentItem.italian);
       setTimeout(handleNext, 1500);
     }
+  };
+
+  const undoSorting = () => {
+    if (selectedWords.length === 0) return;
+    const lastWord = selectedWords[selectedWords.length - 1];
+    setSelectedWords(selectedWords.slice(0, -1));
+    setShuffledWords([...shuffledWords, lastWord]);
   };
 
   const resetSorting = () => {
@@ -168,10 +178,33 @@ export default function CompositionPractice({ onBack }: CompositionPracticeProps
         <div className="w-10"></div>
       </header>
 
-      <div className="bg-brand-text text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+      <div 
+        className="bg-brand-text text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden cursor-pointer active:scale-[0.99] transition-transform"
+        onClick={() => setShowHint(!showHint)}
+      >
         <div className="relative z-10 space-y-6">
-          <p className="text-brand-accent text-[10px] font-black uppercase tracking-[0.3em]">Japanese Input</p>
+          <div className="flex justify-between items-center">
+             <p className="text-brand-accent text-[10px] font-black uppercase tracking-[0.3em]">Japanese Input</p>
+             {showHint && <span className="text-[10px] font-bold text-brand-sage uppercase">Hint Active</span>}
+          </div>
           <h3 className="text-2xl font-black leading-tight tracking-tight">{currentItem.japanese}</h3>
+          
+          <AnimatePresence>
+            {showHint && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="flex flex-wrap gap-2 pt-2 border-t border-white/10"
+              >
+                {currentItem.italian.split(' ').map((word, i) => (
+                  <span key={i} className="text-sm font-bold text-brand-accent/60 bg-white/5 px-2 py-1 rounded">
+                    {word}
+                  </span>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         <div className="absolute top-0 right-0 p-8 opacity-5">
           <PenTool size={120} />
@@ -199,12 +232,21 @@ export default function CompositionPractice({ onBack }: CompositionPracticeProps
 
         {mode === 'sorting' && (
           <div className="space-y-10">
-            <div className="flex flex-wrap gap-2.5 min-h-[72px] p-6 bg-white border-2 border-dashed border-brand-text/10 rounded-[2rem] shadow-inner">
+            <div className="flex flex-wrap gap-2.5 min-h-[72px] p-6 bg-white border-2 border-dashed border-brand-text/10 rounded-[2rem] shadow-inner relative group">
               {selectedWords.map((word, i) => (
                 <span key={i} className="px-5 py-2.5 bg-[#E8F1EB] text-brand-deep rounded-xl font-black border-2 border-brand-sage shadow-sm uppercase text-sm tracking-tight">
                   {word}
                 </span>
               ))}
+              {selectedWords.length > 0 && (
+                <button 
+                  onClick={undoSorting}
+                  className="absolute -right-2 -top-2 w-8 h-8 bg-brand-accent text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-90 transition-all z-10"
+                  title="Undo"
+                >
+                  <RotateCcw size={14} />
+                </button>
+              )}
               {selectedWords.length === 0 && <span className="text-brand-text/20 font-black uppercase text-sm tracking-widest m-auto">Componi la frase</span>}
             </div>
             <div className="flex flex-wrap gap-2.5 justify-center">
