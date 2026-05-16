@@ -37,6 +37,16 @@ export default function CompositionPractice({ onBack }: CompositionPracticeProps
     }
   }, [currentItem, mode]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (mode === 'sorting' && e.key === 'Backspace') {
+        undoSorting();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mode, selectedWords, shuffledWords]);
+
   const handleNext = () => {
     if (currentIndex < filteredItems.length - 1) {
       setCurrentIndex(currentIndex + 1);

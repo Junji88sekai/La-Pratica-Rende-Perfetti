@@ -2,6 +2,9 @@ import { motion } from 'motion/react';
 import { ReactNode } from 'react';
 import { Book, MessageCircle, PenTool, Flag } from 'lucide-react';
 import { ViewState } from '../types';
+import { vocabData } from '../data/vocab';
+import { phraseData } from '../data/phrases';
+import { compositionData } from '../data/composition';
 
 interface HomeProps {
   onNavigate: (view: ViewState) => void;
@@ -28,21 +31,21 @@ export default function Home({ onNavigate }: HomeProps) {
       <div className="grid gap-5">
         <MenuCard
           title="語彙練習"
-          description="Vocabolario - Category based learning"
+          description={`Vocabolario - ${vocabData.length} words`}
           icon={<Book className="text-brand-sage" size={28} />}
           onClick={() => onNavigate('vocab')}
           borderColor="border-brand-sage"
         />
         <MenuCard
           title="フレーズ練習"
-          description="Frasi Comuni - Everyday expressions"
+          description={`Frasi Comuni - ${phraseData.length} phrases`}
           icon={<MessageCircle className="text-brand-accent" size={28} />}
           onClick={() => onNavigate('phrase')}
           borderColor="border-brand-accent"
         />
         <MenuCard
           title="瞬間作文"
-          description="Composizione - Thinking in Italian"
+          description={`Composizione - ${compositionData.length} exercises`}
           icon={<PenTool className="text-brand-sand" size={28} />}
           onClick={() => onNavigate('composition')}
           borderColor="border-brand-text"
@@ -51,11 +54,11 @@ export default function Home({ onNavigate }: HomeProps) {
 
       <div className="bg-white p-8 rounded-[2rem] border border-brand-text/5 shadow-xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-sand/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110" />
-        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-accent mb-6">Today's Progress</h3>
+        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-brand-accent mb-6">Total Content</h3>
         <div className="grid grid-cols-3 gap-6 relative z-10">
-          <Stat label="VOCAB" value="152" unit="" />
-          <Stat label="PHRASES" value="48" unit="" />
-          <Stat label="STREAK" value="14" unit="days" />
+          <Stat label="VOCAB" value={vocabData.length.toString()} unit="" />
+          <Stat label="PHRASES" value={phraseData.length.toString()} unit="" />
+          <Stat label="TOTAL" value={(vocabData.length + phraseData.length + compositionData.length).toString()} unit="items" />
         </div>
       </div>
     </div>
